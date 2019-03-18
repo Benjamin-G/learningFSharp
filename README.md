@@ -1,3 +1,7 @@
-"# learningFSharp"  git init git add README.md git commit -m "first commit" git remote add origin https://github.com/Benjamin-G/learningFSharp.git git push -u origin master
-"# learningFSharp"  git init git add README.md git commit -m "first commit" git remote add origin https://github.com/Benjamin-G/learningFSharp.git git push -u origin master
-"# learningFSharp" 
+# F# learning repo
+
+This is a learning repo for F#.  Started 3/18/2019
+
+## Installation
+
+Run the .fsx (f# scripts in VS or your choosing)
