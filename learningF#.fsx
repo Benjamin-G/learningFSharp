@@ -69,3 +69,102 @@ optionPatternMatch invalidVal
 
 
 //Complex data types
+
+//Tuple
+let twoTuple = 1,2
+let threeTuple = "a",2,true
+
+//Record types w/ named fields
+type Person = {First:string; Last:string}
+let person1 = {First="john"; Last="doe"}
+
+//Union types
+type Temp =
+| DegreesF of float
+| DegreesC of float
+let temp = DegreesF 98.6
+
+type Employee =
+ | Worker of Person
+ | Manager of Employee list
+
+let jdoe = {First="john"; Last="doe"}
+let worker = Worker jdoe
+
+// Printing 
+// The printf/printfn functions are similar to the
+// Console.Write/WriteLine functions in C#.
+printfn "Printing an int %i, a float %f, a bool %b" 1 2.0 true
+printfn "A string %s, and something generic %A" "hello" [1;2;3;4]
+
+// all complex types have pretty printing built in
+printfn "twoTuple=%A,\nPerson=%A,\nTemp=%A,\nEmployee=%A" 
+         twoTuple person1 temp worker
+
+// There are also sprintf/sprintfn functions for formatting data into a string, similar to String.Format.
+
+
+// extracting boilerplate 
+// The action function always has two parameters: a running total (or state) and the list element to act on (called “x” in the above examples).
+let product n = 
+    let initialValue = 1
+    let action productSoFar x = productSoFar * x
+    [1..n] |> List.fold action initialValue
+
+product 10
+
+let sumOfOdds n = 
+    let initialValue = 0
+    let action sumSoFar x = if x%2=0 then sumSoFar else sumSoFar+x 
+    [1..n] |> List.fold action initialValue
+
+sumOfOdds 10
+
+let alternatingSum n = 
+    let initialValue = (true,0)
+    let action (isNeg,sumSoFar) x = if isNeg then (false,sumSoFar-x)
+                                             else (true ,sumSoFar+x)
+    [1..n] |> List.fold action initialValue |> snd
+//snd second value in a tuple
+alternatingSum 100
+
+type NameAndSize= {Name:string;Size:int}
+ 
+let maxNameAndSize list = 
+    
+    let innerMaxNameAndSize initialValue rest = 
+        let action maxSoFar x = if maxSoFar.Size < x.Size then x else maxSoFar
+        rest |> List.fold action initialValue 
+
+    // handle empty lists
+    match list with
+    | [] -> None
+    | first::rest -> 
+        let max = innerMaxNameAndSize first rest
+        Some max
+
+
+//test
+
+let list = [
+    {Name="Alice"; Size=10}
+    {Name="Bob"; Size=1}
+    {Name="Carol"; Size=12}
+    {Name="David"; Size=5}
+    ]    
+maxNameAndSize list
+maxNameAndSize []
+
+// use the built in function
+list |> List.maxBy (fun item -> item.Size)
+// throws error [] |> List.maxBy (fun item -> item.Size)
+let maxNameAndSize2 list = 
+    match list with
+    | [] -> 
+        None
+    | _ -> 
+        let max = list |> List.maxBy (fun item -> item.Size)
+        Some max
+
+maxNameAndSize2 list
+maxNameAndSize2 []
